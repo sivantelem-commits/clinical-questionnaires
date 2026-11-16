@@ -109,9 +109,17 @@ function render() {
 }
 
 const sevText = s => s.replace(/\[שם\]/g, st.ans['TTBQ2-CG31']?.name || '[שם]');
-function header(d, it) {
+const frameOf = s => s && (s.it?.frame || BY_ID[s.id]?.frame || '');
+function frameBar(cur) {
+  const i = steps.indexOf(cur);
+  let prev = null; for (let k = i - 1; k >= 0; k--) if (steps[k].type === 'item') { prev = steps[k]; break; }
+  const f = frameOf(cur), changed = prev && frameOf(prev) !== f;
+  return `<div class="frame-bar ${changed ? 'changed' : ''}"><span class="fi">🕒</span><div>${changed ? '<div class="fchg">שימו לב – טווח הזמן השתנה</div>' : ''}
+    <span>התייחס/י ל:</span> <b>${esc(f)}</b></div></div>`;
+}
+function header(d, it, step) {
   const first = d.items.find(x => !x.show || x.show(A(d.id))) === it;
-  return `<div class="q-head"><span class="chip">${esc(d.title)}</span><span class="muted small">${esc(d.frame || '')}</span></div>
+  return `<div class="q-head"><span class="chip">${esc(d.title)}</span></div>${frameBar(step)}
     ${first && d.intro ? `<div class="intro-box">${esc(d.intro)}</div>` : ''}
     ${it.sec ? `<div class="muted" style="margin-top:.8rem;font-weight:600">${esc(it.sec)}</div>` : ''}
     ${d.needsEvent === 'trauma' && st.gate.event ? `<div class="small muted" style="margin-top:.5rem">האירוע: ${esc(st.gate.event)}</div>` : ''}`;
@@ -137,6 +145,7 @@ const RENDER = {
       ${D.message ? `<div class="intro-box" style="margin:1rem 0">${esc(D.message)}</div>` : ''}
       <ul class="muted small" style="padding-inline-start:1.2em">
         <li>אין תשובות נכונות או לא נכונות – עני/ה לפי התחושה הראשונה.</li>
+        <li>מעל כל שאלה מופיע <b>טווח הזמן</b> שאליו להתייחס (למשל "עכשיו" או "בשבועיים האחרונים"). כשהוא משתנה – תופיע הדגשה.</li>
         <li>התשובות נשמרות אוטומטית. אפשר לעצור ולחזור לאותו קישור מאוחר יותר.</li>
         <li>שאלות שאינן רלוונטיות עבורך ידולגו אוטומטית.</li>
         <li>התשובות מגיעות רק למטפל/ת שלך.</li></ul>
@@ -191,7 +200,7 @@ const RENDER = {
     const text = sevText(male && it.tm ? it.tm : it.t);
     const scale = it.s || d.scale;
     const isChoice = d.choice;
-    el.innerHTML = header(d, it) + `
+    el.innerHTML = header(d, it, s) + `
       ${isChoice ? `<p class="q-text">${esc(text)}</p>` : `<p class="q-text">${esc(text)}</p>`}
       ${optsHtml(scale, ans[it.id], d.compact ? 'compact' : isChoice ? 'x' : '')}
       ${it.na ? `<button class="link small" id="na" style="margin-top:.6rem">${esc(it.na)}</button>` : ''}
@@ -220,6 +229,7 @@ const RENDER = {
   form(el, s) {
     const d = BY_ID[s.id], ans = A(s.id);
     el.innerHTML = `<div class="q-head"><span class="chip">${esc(d.title)}</span></div>
+      ${s.fields.some(f => f.frame) ? `<div class="frame-bar"><span class="fi">🕒</span><div><span>התייחס/י ל:</span> <b>${esc(s.fields.find(f => f.frame).frame)}</b></div></div>` : ''}
       ${s.key.startsWith('pre') && d.intro ? `<div class="intro-box">${esc(d.intro)}</div>` : ''}
       ${s.fields.map(f => `<label class="f">${esc(f.t)}${f.optional ? ' <span class="muted small">(לא חובה)</span>' : ''}</label>
         ${f.type === 'textarea' ? `<textarea data-k="${f.id}">${esc(ans[f.id] || '')}</textarea>` :

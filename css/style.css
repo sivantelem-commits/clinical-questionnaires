@@ -57,6 +57,13 @@ label.f{display:block;margin:.7em 0 .25em;font-weight:600;font-size:.95rem}
 .review-list{max-height:45vh;overflow:auto;border:1px solid var(--line);border-radius:10px;padding:.5em .9em;background:#fff;font-size:.92rem}
 .review-list div{padding:.25em 0;border-bottom:1px solid #f1ece4}
 
+
+.frame-bar{display:flex;gap:.6rem;align-items:center;margin:.7rem 0 .2rem;background:#fff7e3;border:1px solid #ecdcae;border-radius:12px;padding:.55em .9em;font-size:1.02rem;color:#5b4a1c}
+.frame-bar b{color:#3d3110}
+.frame-bar .fi{font-size:1.25rem}
+.frame-bar.changed{background:var(--sev2b);border-color:var(--sev2);color:#6b3412;animation:fpulse 1.2s ease 2}
+.frame-bar .fchg{font-weight:700;font-size:.85rem;color:var(--sev2)}
+@keyframes fpulse{0%,100%{box-shadow:0 0 0 0 rgba(200,106,45,0)}50%{box-shadow:0 0 0 6px rgba(200,106,45,.18)}}
 /* ---------- therapist ---------- */
 .t-shell{display:grid;grid-template-columns:260px 1fr;min-height:100vh}
 .t-side{background:#20383a;color:#e8efed;padding:1.2rem 1rem;position:sticky;top:0;height:100vh;overflow:auto}
