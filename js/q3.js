@@ -349,3 +349,27 @@ export const CSSRS_FULL = {
     };
   },
 };
+
+// ===================== CGI – התרשמות קלינית גלובלית (Guy, 1976) =====================
+const CGI_S = S(['1 – תקין, ללא מחלה', '2 – גבולי', '3 – חולי קל', '4 – חולי בינוני', '5 – חולי ניכר', '6 – חולי חמור', '7 – בין החולים הקשים ביותר'], 1);
+const CGI_I = S(['1 – שיפור ניכר מאוד', '2 – שיפור ניכר', '3 – שיפור מועט', '4 – ללא שינוי', '5 – החמרה מועטה', '6 – החמרה ניכרת', '7 – החמרה ניכרת מאוד'], 1);
+export const CGI = {
+  id: 'CGI', name: 'CGI', title: 'התרשמות קלינית גלובלית', domain: 'התרשמות קלינית', frame: 'בשבוע האחרון', clinician: true, minutes: 1,
+  intro: 'דירוג המטפל/ת. חומרה – בהשוואה לניסיונך עם מטופלים באותה אבחנה. שיפור – בהשוואה למצב בתחילת הטיפול. ניתן לדלג על דירוג השיפור בהערכה הראשונה.',
+  items: [
+    { id: 'S', t: 'חומרת המחלה (CGI-S): עד כמה המטופל/ת חולה כעת?', s: CGI_S, note: true },
+    { id: 'I', t: 'שיפור כולל (CGI-I): בהשוואה למצב בתחילת הטיפול', s: CGI_I, optional: true, note: true },
+  ],
+  higherIsBetter: false,
+  score(a) {
+    const s = typeof a.S === 'number' ? a.S : null, i = typeof a.I === 'number' ? a.I : null;
+    const sev = s == null ? null : s <= 2 ? 0 : s === 3 ? 1 : s === 4 ? 2 : 3;
+    return {
+      total: s, max: 7, totalLabel: 'חומרה (CGI-S, 1–7)',
+      subscales: i != null ? [{ name: 'שיפור (CGI-I)', score: i, range: '1–7', note: CGI_I[i - 1]?.l.replace(/^\d – /, '') }] : [],
+      level: s == null ? null : { label: CGI_S[s - 1].l.replace(/^\d – /, ''), sev },
+      flags: i != null && i >= 6 ? [{ level: 'warn', text: `CGI-I: ${CGI_I[i - 1].l.replace(/^\d – /, '')}` }] : [],
+      norms: 'Guy (1976). שינוי של נקודה אחת ב-CGI-S נחשב משמעותי קלינית; CGI-I ≤2 מוגדר בדרך כלל כתגובה לטיפול.',
+    };
+  },
+};

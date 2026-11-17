@@ -5,7 +5,7 @@ import * as Q3 from './q3.js';
 const ALL = [
   Q3.STAI_S, Q1.MHC, Q1.SHS, Q1.PHQ9, Q3.BDI, Q1.CESD, Q1.DASS, Q1.CSSRS_SCREEN, Q1.GAD7, Q3.STAI_T, Q2.OCIR, Q3.EAT26,
   Q2.DES, Q2.PQB, Q2.TAS20, Q3.IRI, Q3.DERS, Q3.AQ, Q1.LEC, Q1.ADNM4, Q1.LIFE_EVENTS, Q2.PCL5, Q2.ITQ, Q2.STO, Q2.PTGI, Q1.TTBQ,
-  Q3.MADRS, Q3.CAPS5, Q3.CSSRS_FULL,
+  Q3.MADRS, Q3.CAPS5, Q3.CSSRS_FULL, Q3.CGI,
 ];
 
 // נרמול: כל פריט הופך לאובייקט עם id
@@ -43,6 +43,7 @@ export const DOMAINS = [
   ['הפרעות אכילה', ['EAT-26']],
   ['ויסות, רגש ואישיות', ['DERS', 'TAS-20', 'IRI']],
   ['ספקטרום אוטיסטי', ['AQ']],
+  ['התרשמות קלינית', ['CGI']],
 ];
 
 // חפיפות – כדי למנוע שאלות כפולות אצל המטופל/ת

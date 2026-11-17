@@ -18,7 +18,7 @@ export function historyOf(scored, id) {
 }
 
 // שינוי משמעותי קלינית (MCID) – לפי הספרות המקובלת
-const MCID = { 'PHQ-9': 5, 'GAD-7': 4, 'PCL-5': 10, 'BDI': 5, 'MADRS': 6, 'CAPS-5': 10, 'OCI-R': 6, 'DASS-21': 8, 'CES-D': 6, 'DES': 10, 'STAI-S': 8, 'STAI-T': 8, 'ITQ': 4, 'STO': 4, 'ADNM-4': 3, 'DERS': 15, 'TTBQ2-CG31': 0.4, 'EAT-26': 8 };
+const MCID = { 'PHQ-9': 5, 'GAD-7': 4, 'PCL-5': 10, 'BDI': 5, 'MADRS': 6, 'CAPS-5': 10, 'OCI-R': 6, 'DASS-21': 8, 'CES-D': 6, 'DES': 10, 'STAI-S': 8, 'STAI-T': 8, 'ITQ': 4, 'STO': 4, 'ADNM-4': 3, 'DERS': 15, 'TTBQ2-CG31': 0.4, 'EAT-26': 8, 'CGI': 1 };
 export function changeOf(scored, id) {
   const h = historyOf(scored, id).filter(r => r.res.total != null);
   if (h.length < 2) return null;
